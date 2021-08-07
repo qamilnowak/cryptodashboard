@@ -5,15 +5,24 @@
       </q-card-section>
       <q-separator inset></q-separator>
       <q-card-section>
-        <div class="dot" v-if="index">{{index.value}}
+        <div style="display: flex">
+        <div v-if="index" >
+          <div class="dot" v-if="index">{{index.value}}</div>
+          <div>{{index.value_classification}}</div>
+          <p>Last updated: {{timestamp(index.timestamp)}}</p>
+          <p>The next update will happen in: {{nextUpdate(index.time_until_update)}}</p>
         </div>
-        <div v-if="index">{{index.value_classification}}</div>
-          <p v-if="index">Last updated: {{timestamp}}</p>
-        <p v-if="index">The next update will happen in: {{nextUpdate}}</p>
+          <q-separator vertical inset class="fng-separator"></q-separator>
+          <div v-if="indexBTCTools">
+            <div class="dot" v-if="index">{{indexBTCTools.current}}</div>
+            <p>{{fngZones(indexBTCTools.current)}}</p>
+            <p>{{timestamp(indexBTCTools.next_update, 'DD-MM-YYYY h:mm')}}</p>
+          </div>
+          </div>
       </q-card-section>
     </q-card>
-  <div>
-    {{indexBTCTools}}
+  <div v-if="indexBTCTools">
+
   </div>
 </template>
 
@@ -26,24 +35,28 @@ export default {
   data() {
     return {
       index: null,
-      indexBTCTools: null
+      indexBTCTools: {}
     }
   },
-  methods: {},
+  methods: {
+    nextUpdate (time) {
+      return helpers.secondsToHours(time)
+    },
+    timestamp (timestamp, format = "DD-MM-YYYY") {
+      return helpers.dateFormat(timestamp, format)
+    },
+    fngZones(fng) {
+      return helpers.fngZones(fng)
+    }
+  },
   computed: {
-  timestamp () {
-    return helpers.dateFormat(this.index.timestamp)
-},
-    nextUpdate () {
-    return helpers.secondsToHours(this.index.time_until_update)
-}
   },
   mounted() {
     FearAndGreedService.getFNGIndex().then((response) => {
       this.index = response.data.data[0]
     })
     FearAndGreedService.getFNGBTCIndex().then((response) => {
-      this.indexBTCTools = response.data
+      this.indexBTCTools = response.data.data
     })
   }
 }
@@ -52,7 +65,11 @@ export default {
 <style scoped>
 .fng-card {
   vertical-align: middle;
-  max-width: 160px;
+  max-width: 350px;
+}
+.fng-separator {
+  margin-left: 5px;
+  margin-right: 5px;
 }
 .dot {
   height: 40px;
