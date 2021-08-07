@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <q-card class="fng-card">
     <h6>{{ status }}</h6>
-  </div>
+  </q-card>
 </template>
 
 <script>

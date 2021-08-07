@@ -1,5 +1,5 @@
 <template>
-    <q-card bordered style="max-width: 150px">
+    <q-card class="fng-card">
       <q-card-section>
         <div>Fear & Greed Index</div>
       </q-card-section>
@@ -8,10 +8,13 @@
         <div class="dot" v-if="index">{{index.value}}
         </div>
         <div v-if="index">{{index.value_classification}}</div>
-          <p v-if="index">{{timestamp}}</p>
-        <p v-if="index">{{nextUpdate}}</p>
+          <p v-if="index">Last updated: {{timestamp}}</p>
+        <p v-if="index">The next update will happen in: {{nextUpdate}}</p>
       </q-card-section>
     </q-card>
+  <div>
+    {{indexBTCTools}}
+  </div>
 </template>
 
 <script>
@@ -22,7 +25,8 @@ export default {
   name: 'CoinPrice',
   data() {
     return {
-      index: null
+      index: null,
+      indexBTCTools: null
     }
   },
   methods: {},
@@ -38,11 +42,18 @@ export default {
     FearAndGreedService.getFNGIndex().then((response) => {
       this.index = response.data.data[0]
     })
+    FearAndGreedService.getFNGBTCIndex().then((response) => {
+      this.indexBTCTools = response.data
+    })
   }
 }
 </script>
 
 <style scoped>
+.fng-card {
+  vertical-align: middle;
+  max-width: 160px;
+}
 .dot {
   height: 40px;
   width: 40px;
