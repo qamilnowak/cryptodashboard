@@ -1,37 +1,55 @@
 <template>
-    <q-card class="fng-card">
-      <q-card-section>
-        <div>Fear & Greed Index</div>
-      </q-card-section>
-      <q-separator inset></q-separator>
-      <q-card-section>
-        <div style="display: flex">
-        <div v-if="index" >
-          <div class="dot" v-if="index">{{index.value}}</div>
-          <div>{{index.value_classification}}</div>
-          <p>Last updated: {{timestamp(index.timestamp)}}</p>
-          <p>The next update will happen in: {{nextUpdate(index.time_until_update)}}</p>
-        </div>
-          <q-separator vertical inset class="fng-separator"></q-separator>
-          <div v-if="indexBTCTools">
-            <div class="dot" v-if="index">{{indexBTCTools.current}}</div>
-            <p>{{fngZones(indexBTCTools.current)}}</p>
-            <p>{{timestamp(indexBTCTools.next_update, 'DD-MM-YYYY h:mm')}}</p>
-          </div>
-          </div>
-      </q-card-section>
-    </q-card>
-  <div v-if="indexBTCTools">
-
-  </div>
+        <q-markup-table class="fng-table">
+          <thead>
+          <tr>
+            <th class="text-left">Fear & Greed Index</th>
+            <th class="text-right">alternative.me</th>
+            <th class="text-right">btctools.io</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td class="text-left">Index</td>
+            <td class="text-right"><FnGDot :index="{value: 77, btc: true}"/></td>
+            <td class="text-right"><FnGDot :index="{value: 80, btc: false}"/></td>
+          </tr>
+          <tr>
+            <td class="text-left">Status</td>
+            <td class="text-right">Fear</td>
+            <td class="text-right">Fear</td>
+          </tr>
+          <tr>
+            <td class="text-left">Next Update</td>
+            <td class="text-right">262</td>
+            <td class="text-right">16</td>
+          </tr>
+          </tbody>
+        </q-markup-table>
+<!--        <div style="display: flex">-->
+<!--        <div v-if="index" >-->
+<!--          <div class="dot" v-if="index">{{index.value}}</div>-->
+<!--          <div>{{index.value_classification}}</div>-->
+<!--          <p>Last updated: {{timestamp(index.timestamp)}}</p>-->
+<!--          <p>The next update will happen in: {{nextUpdate(index.time_until_update)}}</p>-->
+<!--        </div>-->
+<!--          <q-separator vertical inset class="fng-separator"></q-separator>-->
+<!--          <div v-if="indexBTCTools">-->
+<!--            <div class="dot" v-if="index">{{indexBTCTools.current}}</div>-->
+<!--            <p>{{fngZones(indexBTCTools.current)}}</p>-->
+<!--            <p>{{timestamp(indexBTCTools.next_update, 'DD-MM-YYYY h:mm')}}</p>-->
+<!--          </div>-->
+<!--          </div>-->
 </template>
 
 <script>
-
-import FearAndGreedService from "@/services/FearAndGreedService";
+import FnGDot from "@/components/FnGDot";
+// import FearAndGreedService from "@/services/FearAndGreedService";
 import helpers from "@/helpers/helpers";
 export default {
   name: 'CoinPrice',
+  components: {
+    FnGDot
+  },
   data() {
     return {
       index: null,
@@ -52,36 +70,28 @@ export default {
   computed: {
   },
   mounted() {
-    FearAndGreedService.getFNGIndex().then((response) => {
-      this.index = response.data.data[0]
-    })
-    FearAndGreedService.getFNGBTCIndex().then((response) => {
-      this.indexBTCTools = response.data.data
-    })
+    // FearAndGreedService.getFNGIndex().then((response) => {
+    //   this.index = response.data.data[0]
+    // })
+    // FearAndGreedService.getFNGBTCIndex().then((response) => {
+    //   this.indexBTCTools = response.data.data
+    // })
   }
 }
 </script>
 
 <style scoped>
-.fng-card {
+.fng-table {
   vertical-align: middle;
   max-width: 350px;
+}
+.fng-icon {
+  width: 20px;
+  height: 20px;
 }
 .fng-separator {
   margin-left: 5px;
   margin-right: 5px;
 }
-.dot {
-  height: 40px;
-  width: 40px;
-  background-color: rgb(223, 206, 96);
-  border-radius: 50%;
-  color: #fff;
-  padding: 3px;
-  font-size: 22px;
-  text-align: center;
-  vertical-align: middle;
-  horiz-align: center;
-  display: inline-block;
-}
+
 </style>

@@ -15,6 +15,12 @@ export default {
     },
     getFNGBTCIndex() {
         return apiClient.get('/fng_index_btc')
+    },
+    getEthGas() {
+        return apiClient.get('/ethgas')
+    },
+    getEth2Contract() {
+        return apiClient.get('/eth2contract')
     }
 
 }

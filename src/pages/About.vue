@@ -1,0 +1,13 @@
+<template>
+  <span>About page</span>
+</template>
+
+<script>
+export default {
+  name: "About"
+}
+</script>
+
+<style scoped>
+
+</style>

@@ -1,5 +1,9 @@
-# cryptodashboard
-
+# Crypto Dashboard
+Simple dashboard
+Created using:
+- Coingecko API
+- Alternative Fear and Greed Index
+- BTC Tools Fear and Greed Index
 ## Project setup
 ```
 npm install
